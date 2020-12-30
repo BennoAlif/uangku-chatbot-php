@@ -174,16 +174,27 @@ class Webhook extends Controller
 
         if ($mode == 1) {
             $numberMessage = (int)$userMessage;
+            if ($numberMessage !== 0) {
+                $message = $numberMessage;
+                $message .= "\nValid";
 
-            $message = $numberMessage;
-            $message .= "Sedang dalam mode transaksi nih, kak. Silahkan ketik nominal yang valid, ya...";
+                $textMessageBuilder = new TextMessageBuilder($message);
 
-            $textMessageBuilder = new TextMessageBuilder($message);
+                // merge all message
+                $multiMessageBuilder = new MultiMessageBuilder();
+                $multiMessageBuilder->add($textMessageBuilder);
+                $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+            } else {
+                $message = $numberMessage;
+                $message .= "\nSedang dalam mode transaksi nih, kak. Silahkan ketik nominal yang valid, ya...";
 
-            // merge all message
-            $multiMessageBuilder = new MultiMessageBuilder();
-            $multiMessageBuilder->add($textMessageBuilder);
-            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+                $textMessageBuilder = new TextMessageBuilder($message);
+
+                // merge all message
+                $multiMessageBuilder = new MultiMessageBuilder();
+                $multiMessageBuilder->add($textMessageBuilder);
+                $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+            }
         } else if (strtolower($userMessage) == 'transaksi') {
             $path = storage_path() . '/json/transactions-flex.json';
             $flexTemplate = file_get_contents($path);
