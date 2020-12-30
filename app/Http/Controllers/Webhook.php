@@ -167,7 +167,7 @@ class Webhook extends Controller
 
         if (strtolower($userMessage) == 'transaksi') {
             $path = storage_path() . '/json/transactions-flex.json';
-            $flexTemplate = json_decode(file_get_contents($path), true);
+            $flexTemplate = file_get_contents($path);
 
             // $result = $this->httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
             //     'replyToken' => $event['replyToken'],
