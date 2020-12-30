@@ -173,8 +173,10 @@ class Webhook extends Controller
         $mode = $this->user["transaction_mode"];
 
         if ($mode == 1) {
-            $message = "Sedang dalam mode transaksi nih, kak. Silahkan ketik nominal yang valid, ya...";
-            // $message = "Silahkan ketik nominal ${userMessage}nya, kak!";
+            $numberMessage = (int)$userMessage;
+
+            $message = $numberMessage;
+            $message .= "Sedang dalam mode transaksi nih, kak. Silahkan ketik nominal yang valid, ya...";
 
             $textMessageBuilder = new TextMessageBuilder($message);
 
