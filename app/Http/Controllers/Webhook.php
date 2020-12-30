@@ -180,10 +180,8 @@ class Webhook extends Controller
                     ]
                 ],
             ]);
-        } else {
-            $message = 'User TIDAK ketik transaksi.';
-            $textMessageBuilder = new TextMessageBuilder($message);
-            $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
+        } else if (strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
+            $this->addTransactions($userMessage, $event['replyToken']);
         }
     }
 
@@ -203,5 +201,25 @@ class Webhook extends Controller
 
         // send message
         $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+    }
+
+    private function addTransactions($msg, $replyToken)
+    {
+        // create text message
+
+        if ($msg == "pemasukan") {
+            # code...
+            $message = "Pemasukan " . $msg;
+        } else {
+            $message = "Pengeluaran " . $msg;
+        }
+        $textMessageBuilder = new TextMessageBuilder($message);
+
+        // merge all message
+        $multiMessageBuilder = new MultiMessageBuilder();
+        $multiMessageBuilder->add($textMessageBuilder);
+
+        // send message
+        $this->bot->replyMessage($replyToken, $multiMessageBuilder);
     }
 }
