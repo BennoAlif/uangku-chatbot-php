@@ -73,8 +73,7 @@
                 "action": {
                     "type": "postback",
                     "label": "Pemasukan",
-                    "data": "pemasukan",
-                    "displayText": "Silahkan ketik nominal pemasukannya, kak."
+                    "data": "pemasukan"
                 },
                 "color": "#27AE60",
                 "style": "primary",
@@ -85,8 +84,7 @@
                 "action": {
                     "type": "postback",
                     "label": "Pengeluaran",
-                    "data": "pengeluaran",
-                    "displayText": "Silahkan ketik nominal pengeluarannya, kak."
+                    "data": "pengeluaran"
                 },
                 "color": "#F63D5E",
                 "style": "primary",

@@ -207,7 +207,7 @@ class Webhook extends Controller
     {
         // create text message
 
-        if ($msg == "pemasukan") {
+        if (strtolower($msg) == "pemasukan") {
             # code...
             $message = "Pemasukan " . $msg;
         } else {
