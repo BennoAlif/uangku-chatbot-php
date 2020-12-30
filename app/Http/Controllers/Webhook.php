@@ -191,8 +191,6 @@ class Webhook extends Controller
             $this->transactionsGateway->changeMode(0, $event['source']['userId']);
         } else if (strtolower($userMessage) == 'pemasukan') {
 
-            $transactionType = 0;
-
             $message = $transactionType . "PEMASUKAN";
 
 
@@ -203,8 +201,10 @@ class Webhook extends Controller
             $multiMessageBuilder->add($textMessageBuilder);
             $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
             $this->transactionsGateway->changeMode(1, $event['source']['userId']);
+
+            return $transactionType = 0;
         } else if (strtolower($userMessage) == 'pengeluaran') {
-            $transactionType = 1;
+
             $message = $transactionType . "PENGELUARAN";
 
 
@@ -215,6 +215,8 @@ class Webhook extends Controller
             $multiMessageBuilder->add($textMessageBuilder);
             $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
             $this->transactionsGateway->changeMode(1, $event['source']['userId']);
+
+            return $transactionType = 1;
         } else if ($mode == 1) {
             $numberMessage = (int)$userMessage;
             if ($numberMessage !== 0) {
