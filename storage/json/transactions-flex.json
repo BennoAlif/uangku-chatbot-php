@@ -71,9 +71,9 @@
             {
                 "type": "button",
                 "action": {
-                    "type": "postback",
-                    "label": "Pemasukan",
-                    "data": "pemasukan"
+                    "type": "message",
+                    "label": "pemasukan",
+                    "text": "pemasukan"
                 },
                 "color": "#27AE60",
                 "style": "primary",
@@ -82,9 +82,9 @@
             {
                 "type": "button",
                 "action": {
-                    "type": "postback",
+                    "type": "message",
                     "label": "Pengeluaran",
-                    "data": "pengeluaran"
+                    "text": "pengeluaran"
                 },
                 "color": "#F63D5E",
                 "style": "primary",
@@ -101,7 +101,7 @@
                 "action": {
                     "type": "message",
                     "label": "Bantuan",
-                    "text": "Bantuan"
+                    "text": "bantuan"
                 }
             }
         ]

@@ -161,10 +161,10 @@ class Webhook extends Controller
             );
         }
     }
+
     private function textMessage($event)
     {
         $userMessage = $event['message']['text'];
-        $userData = $event['postback']['data'];
 
         if (strtolower($userMessage) == 'transaksi') {
             $path = storage_path() . '/json/transactions-flex.json';
@@ -181,8 +181,8 @@ class Webhook extends Controller
                     ]
                 ],
             ]);
-        } else if (strtolower($userData) == 'pemasukan' || strtolower($userData) == 'pengeluaran') {
-            $this->addTransactions($userData, $event['replyToken']);
+        } else if (strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
+            $this->addTransactions($userMessage, $event['replyToken']);
         }
     }
 
@@ -210,9 +210,9 @@ class Webhook extends Controller
 
         if (strtolower($msg) == "pemasukan") {
             # code...
-            $message = "Pemasukan " . $msg;
+            $message = $msg;
         } else {
-            $message = "Pengeluaran " . $msg;
+            $message = $msg;
         }
         $textMessageBuilder = new TextMessageBuilder($message);
 
