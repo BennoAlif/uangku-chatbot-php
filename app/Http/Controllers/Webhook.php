@@ -172,7 +172,15 @@ class Webhook extends Controller
         $userId = $this->user["id"];
         $mode = $this->user["transaction_mode"];
 
-        $transactionType = 1;
+        $transactionType = 2;
+
+        if (strtolower($userMessage) == 'pemasukan') {
+            global $transactionType;
+            $transactionType = 0;
+        } else if (strtolower($userMessage) == 'pengeluaran') {
+            global $transactionType;
+            $transactionType = 1;
+        }
 
         if (strtolower($userMessage) == 'transaksi') {
             $path = storage_path() . '/json/transactions-flex.json';
@@ -192,13 +200,7 @@ class Webhook extends Controller
             $this->transactionsGateway->changeMode(0, $event['source']['userId']);
         } else if (strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
             $message = "Ketik nominal {$userMessage}nya ya, kak.";
-            if (strtolower($userMessage) == 'pemasukan') {
-                global $transactionType;
-                $transactionType = 0;
-            } else if (strtolower($userMessage) == 'pengeluaran') {
-                global $transactionType;
-                $transactionType = 1;
-            }
+
 
             $textMessageBuilder = new TextMessageBuilder($message);
 
