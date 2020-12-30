@@ -172,13 +172,25 @@ class Webhook extends Controller
         $userId = $this->user["id"];
         $mode = $this->user["transaction_mode"];
 
+
+        $transactionType = 2;
+
         if (strtolower($userMessage) == 'pemasukan') {
-            global $transactionType;
             $transactionType = 0;
         } else if (strtolower($userMessage) == 'pengeluaran') {
-            global $transactionType;
             $transactionType = 1;
         }
+
+        $message = $transactionType;
+
+
+        $textMessageBuilder = new TextMessageBuilder($message);
+
+        // merge all message
+        $multiMessageBuilder = new MultiMessageBuilder();
+        $multiMessageBuilder->add($textMessageBuilder);
+        $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+        $this->transactionsGateway->changeMode(1, $event['source']['userId']);
 
         if (strtolower($userMessage) == 'transaksi') {
             $path = storage_path() . '/json/transactions-flex.json';
