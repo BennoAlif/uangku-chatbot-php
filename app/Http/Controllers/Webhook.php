@@ -171,9 +171,6 @@ class Webhook extends Controller
         $this->user = $this->userGateway->getUser($event['source']['userId']);
         $userId = $this->user["id"];
         $mode = $this->user["transaction_mode"];
-        $transactionType = 0;
-
-
 
         if ($mode == 0) {
             if (strtolower($userMessage) == 'transaksi') {
