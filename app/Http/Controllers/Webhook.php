@@ -174,26 +174,38 @@ class Webhook extends Controller
         $msg = explode(" ", $userMessage);
 
         if (strtolower($msg[0]) == 'masuk') {
-            $message = "Tambah pemasukkan " . $msg[1];
+            $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002735);
+
+            $rupiah = $this->rupiah($msg[1]);
+
+            $message = "Pemasukan sebesar {$rupiah} sudah kami catat ya, kak. ";
 
             $this->transactionsGateway->saveTransaction((int)$msg[1], 0, $userId);
 
             $textMessageBuilder = new TextMessageBuilder($message);
 
+
             // merge all message
             $multiMessageBuilder = new MultiMessageBuilder();
             $multiMessageBuilder->add($textMessageBuilder);
+            $multiMessageBuilder->add($stickerMessageBuilder);
             $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
         } else if (strtolower($msg[0]) == 'keluar') {
-            $message = "Tambah pengeluaran " . $msg[1];
+            $rupiah = $this->rupiah($msg[1]);
+
+            $message = "Pengeluaran sebesar {$rupiah} sudah kami catat ya, kak. ";
+
+            $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002735);
 
             $this->transactionsGateway->saveTransaction((int)$msg[1], 1, $userId);
 
             $textMessageBuilder = new TextMessageBuilder($message);
 
+
             // merge all message
             $multiMessageBuilder = new MultiMessageBuilder();
             $multiMessageBuilder->add($textMessageBuilder);
+            $multiMessageBuilder->add($stickerMessageBuilder);
             $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
         }
     }
@@ -301,8 +313,10 @@ class Webhook extends Controller
         $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
     }
 
-    private function addTransactions($nominal, $type, $userId, $lineId, $replyToken)
+    private function rupiah($angka)
     {
-        $this->transactionsGateway->saveTransaction($nominal, $type, $userId);
+
+        $hasil_rupiah = "Rp " . number_format($angka, 2, ',', '.');
+        return $hasil_rupiah;
     }
 }
