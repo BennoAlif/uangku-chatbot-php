@@ -172,7 +172,7 @@ class Webhook extends Controller
         $userId = $this->user["id"];
         $mode = $this->user["transaction_mode"];
 
-        $transactionType = 0;
+        $transactionType = 1;
 
         if (strtolower($userMessage) == 'transaksi') {
             $path = storage_path() . '/json/transactions-flex.json';
