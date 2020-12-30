@@ -169,7 +169,8 @@ class Webhook extends Controller
             $path = storage_path() . '/json/transactions-flex.json';
             $flexTemplate = file_get_contents($path);
 
-            $result = $this->httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
+            $httpClient = new CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
+            $result = $httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
                 'replyToken' => $event['replyToken'],
                 'messages'   => [
                     [
