@@ -4,7 +4,6 @@
 namespace App\Http\Controllers;
 
 use App\Gateway\EventLogGateway;
-use App\Gateway\QuestionGateway;
 use App\Gateway\UserGateway;
 use App\Gateway\TransactionsGateway;
 use Illuminate\Http\Request;
@@ -60,13 +59,15 @@ class Webhook extends Controller
         Response $response,
         Logger $logger,
         EventLogGateway $logGateway,
-        UserGateway $userGateway
+        UserGateway $userGateway,
+        TransactionsGateway $transactionsGateway
     ) {
         $this->request = $request;
         $this->response = $response;
         $this->logger = $logger;
         $this->logGateway = $logGateway;
         $this->userGateway = $userGateway;
+        $this->transactionsGateway = $transactionsGateway;
 
         // create bot object
         $httpClient = new CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
