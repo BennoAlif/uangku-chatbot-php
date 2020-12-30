@@ -171,14 +171,17 @@ class Webhook extends Controller
         $this->user = $this->userGateway->getUser($event['source']['userId']);
         $userId = $this->user["id"];
         $mode = $this->user["transaction_mode"];
+        $transactionType = "";
 
         if ($mode == 1) {
             $numberMessage = (int)$userMessage;
             if ($numberMessage !== 0) {
-                $this->transactionsGateway->saveTransaction($numberMessage, 0, $userId);
+                // $this->transactionsGateway->saveTransaction($numberMessage, 0, $userId);
+
 
                 $message = $numberMessage;
                 $message .= "\nValid";
+                $message .= $transactionType;
 
                 $textMessageBuilder = new TextMessageBuilder($message);
 
@@ -213,18 +216,8 @@ class Webhook extends Controller
                 ],
             ]);
         } else if (strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
-            // $this->addTransactions($userMessage, $event['replyToken']);
+            $transactionType = $userMessage;
             $this->transactionsGateway->changeMode(1, $event['source']['userId']);
-
-            $message = $event['source']['userId'];
-            // $message = "Silahkan ketik nominal ${userMessage}nya, kak!";
-
-            $textMessageBuilder = new TextMessageBuilder($message);
-
-            // merge all message
-            $multiMessageBuilder = new MultiMessageBuilder();
-            $multiMessageBuilder->add($textMessageBuilder);
-            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
         }
     }
 
@@ -246,23 +239,9 @@ class Webhook extends Controller
         $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
     }
 
-    private function addTransactions($msg, $replyToken)
+    private function addTransactions($nominal, $type, $userId, $lineId, $replyToken)
     {
-        // create text message
-
-        if (strtolower($msg) == "pemasukan") {
-            $message = "Silahkan ketik nominal pemasukannya, kak!";
-        } else {
-            $message = "Silahkan ketik nominal pengeluarannya, kak!";
-        }
-
-        $textMessageBuilder = new TextMessageBuilder($message);
-
-        // merge all message
-        $multiMessageBuilder = new MultiMessageBuilder();
-        $multiMessageBuilder->add($textMessageBuilder);
-
-        // send message
-        $this->bot->replyMessage($replyToken, $multiMessageBuilder);
+        $this->transactionsGateway->saveTransaction($nominal, $type, $userId);
+        $this->transactionsGateway->changeMode(0, $lineId);
     }
 }
