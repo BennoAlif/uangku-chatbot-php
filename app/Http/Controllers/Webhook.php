@@ -210,27 +210,37 @@ class Webhook extends Controller
         }
 
         if ($mode == 1) {
-            $numberMessage = (int)$userMessage;
-            if ($numberMessage !== 0) {
-                // $this->transactionsGateway->saveTransaction($numberMessage, 0, $userId);
-                if (strtolower($userMessage) == "pemasukan") {
-                    $transactionType = 0;
-                } else if (strtolower($userMessage) == "pengeluaran") {
-                    $transactionType = 1;
-                }
+            $message = $transactionType;
 
-                $message = $numberMessage;
-                $message .= "\nValid\n";
-                $message .= $transactionType;
-                $message .= "\nType";
+            $textMessageBuilder = new TextMessageBuilder($message);
 
-                $textMessageBuilder = new TextMessageBuilder($message);
+            // merge all message
+            $multiMessageBuilder = new MultiMessageBuilder();
+            $multiMessageBuilder->add($textMessageBuilder);
+            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
 
-                // merge all message
-                $multiMessageBuilder = new MultiMessageBuilder();
-                $multiMessageBuilder->add($textMessageBuilder);
-                $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
-            }
+
+            // $numberMessage = (int)$userMessage;
+            // if ($numberMessage !== 0) {
+            //     // $this->transactionsGateway->saveTransaction($numberMessage, 0, $userId);
+            //     if (strtolower($userMessage) == "pemasukan") {
+            //         $transactionType = 0;
+            //     } else if (strtolower($userMessage) == "pengeluaran") {
+            //         $transactionType = 1;
+            //     }
+
+            //     $message = $numberMessage;
+            //     $message .= "\nValid\n";
+            //     $message .= $transactionType;
+            //     $message .= "\nType";
+
+            //     $textMessageBuilder = new TextMessageBuilder($message);
+
+            //     // merge all message
+            //     $multiMessageBuilder = new MultiMessageBuilder();
+            //     $multiMessageBuilder->add($textMessageBuilder);
+            //     $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+            // }
         }
 
 
