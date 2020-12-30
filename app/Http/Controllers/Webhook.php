@@ -171,7 +171,7 @@ class Webhook extends Controller
         $this->user = $this->userGateway->getUser($event['source']['userId']);
         $userId = $this->user["id"];
         $mode = $this->user["transaction_mode"];
-        $transactionType = "";
+        $transactionType = 0;
 
         if ($mode == 1) {
             $numberMessage = (int)$userMessage;
@@ -182,6 +182,7 @@ class Webhook extends Controller
                 $message = $numberMessage;
                 $message .= "\nValid";
                 $message .= $transactionType;
+                $message .= "\Type";
 
                 $textMessageBuilder = new TextMessageBuilder($message);
 
@@ -217,6 +218,11 @@ class Webhook extends Controller
             ]);
         } else if (strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
             $transactionType = $userMessage;
+            if (strtolower($userMessage) == "pemasukan") {
+                $transactionType = 0;
+            } else if (strtolower($userMessage) == "pengeluaran") {
+                $transactionType = 1;
+            }
             $this->transactionsGateway->changeMode(1, $event['source']['userId']);
         }
     }
