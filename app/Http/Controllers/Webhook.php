@@ -169,7 +169,7 @@ class Webhook extends Controller
         $userMessage = $event['message']['text'];
 
         $this->user = $this->userGateway->getUser($event['source']['userId']);
-        $message = $this->user;
+        $message = implode(" ", $this->user);
         // $message = "Silahkan ketik nominal ${userMessage}nya, kak!";
 
         $textMessageBuilder = new TextMessageBuilder($message);
