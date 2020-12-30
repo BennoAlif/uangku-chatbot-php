@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use App\Gateway\EventLogGateway;
@@ -59,18 +60,16 @@ class Webhook extends Controller
         Logger $logger,
         EventLogGateway $logGateway,
         UserGateway $userGateway
-        // QuestionGateway $questionGateway
     ) {
         $this->request = $request;
         $this->response = $response;
         $this->logger = $logger;
         $this->logGateway = $logGateway;
-        // $this->userGateway = $userGateway;
-        // $this->questionGateway = $questionGateway;
+        $this->userGateway = $userGateway;
 
         // create bot object
         $httpClient = new CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
-        $this->bot  = new LINEBot($httpClient, ['channelSecret' => getenv('CHANNEL_SECRET')]);
+        $this->bot = new LINEBot($httpClient, ['channelSecret' => getenv('CHANNEL_SECRET')]);
     }
 
     public function __invoke()
