@@ -130,11 +130,16 @@ class Webhook extends Controller
 
             // create welcome message
             $message  = "Halo kak, " . $profile['displayName'] . "!\n";
-            $message .= 'Kakak bisa ketik "Transaksi" untuk mencatat pengeluaran ataupun pemasukan.' . "!\n";
-            $message .= 'Kakak juga bisa lihat riwayat transaksi sesuai tanggal loh, ketik "Riwayat" diikuti dengan tanggal yang ingin kakak lihat.' . "!\n";
-            $message .= 'Contoh "Riwayat 08/12/2020"' . "!\n";
-            $message .= 'Kalau kakak lupa perintahnya apa aja, kakak tinggal ketik "Bantuan", nanti keluar kok hal yang harus kakak ketik dan fungsinya.';
+            $message .= 'Kakak bisa ketik "Transaksi" untuk mencatat pengeluaran ataupun pemasukan.' . "\n";
+
             $textMessageBuilder = new TextMessageBuilder($message);
+
+            $message1 = 'Kakak juga bisa lihat riwayat transaksi sesuai tanggal loh, ketik "Riwayat" diikuti dengan tanggal yang ingin kakak lihat.' . "\n";
+            $message1 .= 'Contoh "Riwayat 08/12/2020"';
+            $textMessageBuilder1 = new TextMessageBuilder($message1);
+
+            $message2 = 'Kalau kakak lupa perintahnya apa aja, kakak tinggal ketik "Bantuan", nanti keluar kok hal yang harus kakak ketik dan fungsinya.';
+            $textMessageBuilder2 = new TextMessageBuilder($message2);
 
             // create sticker message
             $stickerMessageBuilder = new StickerMessageBuilder(1, 3);
@@ -142,6 +147,8 @@ class Webhook extends Controller
             // merge all message
             $multiMessageBuilder = new MultiMessageBuilder();
             $multiMessageBuilder->add($textMessageBuilder);
+            $multiMessageBuilder->add($textMessageBuilder1);
+            $multiMessageBuilder->add($textMessageBuilder2);
             $multiMessageBuilder->add($stickerMessageBuilder);
 
             // send reply message
