@@ -16,14 +16,6 @@ class TransactionsGateway
         $this->db = app('db');
     }
 
-    public function changeMode(int $mode, string $userId)
-    {
-        $this->db->table("users")->update([
-            "transaction_mode" => $mode,
-            "user_id" => $userId
-        ]);
-    }
-
 
     public function saveTransaction(int $nominal, int $type, int $userId)
     {

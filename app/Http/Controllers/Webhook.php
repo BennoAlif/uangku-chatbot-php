@@ -175,8 +175,9 @@ class Webhook extends Controller
         $msg = explode(" ", $userMessage);
 
         if (strtolower($msg[0]) == 'masuk') {
-            $message = "Tambah pemasukkan" . $msg[1];
+            $message = "Tambah pemasukkan " . $msg[1];
 
+            $this->transactionsGateway->saveTransaction((int)$msg[1], 0, $userId);
 
             $textMessageBuilder = new TextMessageBuilder($message);
 
@@ -184,10 +185,10 @@ class Webhook extends Controller
             $multiMessageBuilder = new MultiMessageBuilder();
             $multiMessageBuilder->add($textMessageBuilder);
             $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
-            $this->transactionsGateway->changeMode(1, $event['source']['userId']);
         } else if (strtolower($msg[0]) == 'keluar') {
-            $message = "Tambah pengeluaran" . $msg[1];;
+            $message = "Tambah pengeluaran " . $msg[1];
 
+            $this->transactionsGateway->saveTransaction((int)$msg[1], 1, $userId);
 
             $textMessageBuilder = new TextMessageBuilder($message);
 
@@ -195,7 +196,6 @@ class Webhook extends Controller
             $multiMessageBuilder = new MultiMessageBuilder();
             $multiMessageBuilder->add($textMessageBuilder);
             $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
-            $this->transactionsGateway->changeMode(1, $event['source']['userId']);
         }
     }
 
@@ -305,6 +305,5 @@ class Webhook extends Controller
     private function addTransactions($nominal, $type, $userId, $lineId, $replyToken)
     {
         $this->transactionsGateway->saveTransaction($nominal, $type, $userId);
-        $this->transactionsGateway->changeMode(0, $lineId);
     }
 }

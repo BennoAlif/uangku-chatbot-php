@@ -1,109 +1,86 @@
 {
     "type": "bubble",
-    "size": "mega",
-    "header": {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [
-            {
-                "type": "text",
-                "text": "Transaksi Hari Ini",
-                "weight": "bold",
-                "color": "#263238"
-            },
-            {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                    {
-                        "type": "text",
-                        "text": "Pemasukan",
-                        "color": "#263238",
-                        "size": "sm"
-                    },
-                    {
-                        "type": "text",
-                        "text": "Rp 40.000",
-                        "color": "#27AE60",
-                        "size": "xl",
-                        "flex": 4,
-                        "weight": "bold"
-                    }
-                ]
-            },
-            {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                    {
-                        "type": "text",
-                        "text": "Pengeluaran",
-                        "color": "#263238",
-                        "size": "sm"
-                    },
-                    {
-                        "type": "text",
-                        "text": "Rp 20.000",
-                        "color": "#F63D5E",
-                        "size": "xl",
-                        "flex": 4,
-                        "weight": "bold"
-                    }
-                ]
-            }
-        ],
-        "paddingAll": "20px",
-        "backgroundColor": "#FFE59A",
-        "spacing": "md",
-        "height": "180px",
-        "paddingTop": "22px"
-    },
     "body": {
         "type": "box",
         "layout": "vertical",
         "contents": [
             {
                 "type": "text",
-                "text": "Tambah transaksi untuk hari ini",
-                "color": "#b7b7b7",
-                "size": "xs"
+                "text": "Riwayat Transaksi",
+                "weight": "bold",
+                "color": "#1DB446",
+                "size": "sm"
             },
             {
-                "type": "button",
-                "action": {
-                    "type": "message",
-                    "label": "pemasukan",
-                    "text": "pemasukan"
-                },
-                "color": "#27AE60",
-                "style": "primary",
-                "margin": "16px"
+                "type": "text",
+                "text": "UANGKU",
+                "weight": "bold",
+                "size": "xxl",
+                "margin": "md"
             },
             {
-                "type": "button",
-                "action": {
-                    "type": "message",
-                    "label": "Pengeluaran",
-                    "text": "pengeluaran"
-                },
-                "color": "#F63D5E",
-                "style": "primary",
-                "margin": "16px"
+                "type": "text",
+                "text": "28 Desember 2020",
+                "size": "xs",
+                "color": "#aaaaaa",
+                "wrap": true
+            },
+            {
+                "type": "separator",
+                "margin": "xxl"
+            },
+            {
+                "type": "box",
+                "layout": "vertical",
+                "margin": "xxl",
+                "spacing": "sm",
+                "contents": [
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "Pemasukan",
+                                "size": "md",
+                                "color": "#555555",
+                                "flex": 0
+                            },
+                            {
+                                "type": "text",
+                                "text": "$2.99",
+                                "size": "md",
+                                "color": "#111111",
+                                "align": "end"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "Pengeluaran",
+                                "size": "md",
+                                "color": "#555555"
+                            },
+                            {
+                                "type": "text",
+                                "text": "$0.69",
+                                "size": "md",
+                                "color": "#111111",
+                                "align": "end"
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },
-    "footer": {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [
-            {
-                "type": "button",
-                "action": {
-                    "type": "message",
-                    "label": "Bantuan",
-                    "text": "bantuan"
-                }
-            }
-        ]
+    "styles": {
+        "footer": {
+            "separator": true
+        }
     }
 }
