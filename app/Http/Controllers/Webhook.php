@@ -189,33 +189,10 @@ class Webhook extends Controller
                     ],
                 ]);
                 $this->transactionsGateway->changeMode(0, $event['source']['userId']);
-            } else if ($mode == 0 && strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
+            } else if (strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
+                if ($mode == 0) {
+                    $message = "Ketik nominal {$userMessage}nya ya, kak. Jangan lupa dalam bentuk nomor.";
 
-                $message = "Ketik nominal {$userMessage}nya ya, kak. Jangan lupa dalam bentuk nomor.";
-
-
-                $textMessageBuilder = new TextMessageBuilder($message);
-
-                // merge all message
-                $multiMessageBuilder = new MultiMessageBuilder();
-                $multiMessageBuilder->add($textMessageBuilder);
-                $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
-                $this->transactionsGateway->changeMode(1, $event['source']['userId']);
-            } else if ($mode == 1 && strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
-                $numberMessage = (int)$userMessage;
-
-                if ($numberMessage !== 0) {
-                    // $this->transactionsGateway->saveTransaction($numberMessage, 0, $userId);
-                    if (strtolower($userMessage) == "pemasukan") {
-                        $transactionType = 0;
-                    } else if (strtolower($userMessage) == "pengeluaran") {
-                        $transactionType = 1;
-                    }
-
-                    $message = $numberMessage;
-                    $message .= "\nValid\n";
-                    $message .= $transactionType;
-                    $message .= "\nType";
 
                     $textMessageBuilder = new TextMessageBuilder($message);
 
@@ -223,34 +200,42 @@ class Webhook extends Controller
                     $multiMessageBuilder = new MultiMessageBuilder();
                     $multiMessageBuilder->add($textMessageBuilder);
                     $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+                    $this->transactionsGateway->changeMode(1, $event['source']['userId']);
+                } else if ($mode == 1) {
+                    $numberMessage = (int)$userMessage;
+
+                    if ($numberMessage !== 0) {
+                        // $this->transactionsGateway->saveTransaction($numberMessage, 0, $userId);
+                        if (strtolower($userMessage) == "pemasukan") {
+                            $transactionType = 0;
+                        } else if (strtolower($userMessage) == "pengeluaran") {
+                            $transactionType = 1;
+                        }
+
+                        $message = $numberMessage;
+                        $message .= "\nValid\n";
+                        $message .= $transactionType;
+                        $message .= "\nType";
+
+                        $textMessageBuilder = new TextMessageBuilder($message);
+
+                        // merge all message
+                        $multiMessageBuilder = new MultiMessageBuilder();
+                        $multiMessageBuilder->add($textMessageBuilder);
+                        $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+                    }
                 }
             }
         } else {
-            $numberMessage = (int)$userMessage;
-            if ($numberMessage !== 0) {
-                // $this->transactionsGateway->saveTransaction($numberMessage, 0, $userId);
 
-                $message = $numberMessage;
-                $message .= "\nValid\n";
-                $message .= $transactionType;
-                $message .= "\nType";
+            $message = "Sedang dalam mode transaksi nih, kak. silakan ketik nominal yang valid, ya.";
 
-                $textMessageBuilder = new TextMessageBuilder($message);
+            $textMessageBuilder = new TextMessageBuilder($message);
 
-                // merge all message
-                $multiMessageBuilder = new MultiMessageBuilder();
-                $multiMessageBuilder->add($textMessageBuilder);
-                $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
-            } else {
-                $message = "Sedang dalam mode transaksi nih, kak. silakan ketik nominal yang valid, ya.";
-
-                $textMessageBuilder = new TextMessageBuilder($message);
-
-                // merge all message
-                $multiMessageBuilder = new MultiMessageBuilder();
-                $multiMessageBuilder->add($textMessageBuilder);
-                $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
-            }
+            // merge all message
+            $multiMessageBuilder = new MultiMessageBuilder();
+            $multiMessageBuilder->add($textMessageBuilder);
+            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
         }
     }
 
