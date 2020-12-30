@@ -180,9 +180,9 @@ class Webhook extends Controller
 
 
                 $message = $numberMessage;
-                $message .= "\nValid";
+                $message .= "\nValid\n";
                 $message .= $transactionType;
-                $message .= "\Type";
+                $message .= "\nType";
 
                 $textMessageBuilder = new TextMessageBuilder($message);
 
@@ -222,6 +222,15 @@ class Webhook extends Controller
             } else if (strtolower($userMessage) == "pengeluaran") {
                 $transactionType = 1;
             }
+            $message = $transactionType;
+            $message .= "\nSedang dalam mode transaksi nih, kak. Silahkan ketik nominal yang valid, ya.";
+
+            $textMessageBuilder = new TextMessageBuilder($message);
+
+            // merge all message
+            $multiMessageBuilder = new MultiMessageBuilder();
+            $multiMessageBuilder->add($textMessageBuilder);
+            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
             $this->transactionsGateway->changeMode(1, $event['source']['userId']);
         }
     }
