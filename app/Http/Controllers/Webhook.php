@@ -189,13 +189,23 @@ class Webhook extends Controller
                 ],
             ]);
             $this->transactionsGateway->changeMode(0, $event['source']['userId']);
-        } else if (strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
-            if (strtolower($userMessage) == "pemasukan") {
-                $transactionType = 0;
-            } else if (strtolower($userMessage) == "pengeluaran") {
-                $transactionType = 1;
-            }
-            $message = $transactionType;
+        } else if (strtolower($userMessage) == 'pemasukan') {
+
+            $transactionType = 0;
+
+            $message = $transactionType . "PEMASUKAN";
+
+
+            $textMessageBuilder = new TextMessageBuilder($message);
+
+            // merge all message
+            $multiMessageBuilder = new MultiMessageBuilder();
+            $multiMessageBuilder->add($textMessageBuilder);
+            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+            $this->transactionsGateway->changeMode(1, $event['source']['userId']);
+        } else if (strtolower($userMessage) == 'pengeluaran') {
+            $transactionType = 1;
+            $message = $transactionType . "PENGELUARAN";
 
 
             $textMessageBuilder = new TextMessageBuilder($message);
