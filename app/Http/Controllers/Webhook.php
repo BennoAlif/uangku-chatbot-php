@@ -167,9 +167,17 @@ class Webhook extends Controller
 
         if (strtolower($userMessage) == 'transaksi') {
 
-            $message = 'User ketik transaksi.';
-            $textMessageBuilder = new TextMessageBuilder($message);
-            $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
+            $flexTemplate = file_get_contents("../../../transactions_flex.json"); // template flex message
+            $result = $this->httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
+                'replyToken' => $event['replyToken'],
+                'messages'   => [
+                    [
+                        'type'     => 'flex',
+                        'altText'  => 'Test Flex Message',
+                        'contents' => json_decode($flexTemplate)
+                    ]
+                ],
+            ]);
         } else {
             $message = 'User TIDAK ketik transaksi.';
             $textMessageBuilder = new TextMessageBuilder($message);
@@ -180,7 +188,7 @@ class Webhook extends Controller
     private function stickerMessage($event)
     {
         // create sticker message
-        $stickerMessageBuilder = new StickerMessageBuilder(1, 106);
+        $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002759);
 
         // create text message
         $message = 'Ketik "transaksi" kalau mau mencatat pengeluaran atau pemasukan kakak, yaa!';
