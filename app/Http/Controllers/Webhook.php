@@ -166,8 +166,8 @@ class Webhook extends Controller
         $userMessage = $event['message']['text'];
 
         if (strtolower($userMessage) == 'transaksi') {
-            $path = storage_path() . '\json\transactions-flex.json';
-            // $flexTemplate = json_decode(file_get_contents($path), true);
+            $path = storage_path() . '/json/transactions-flex.json';
+            $flexTemplate = json_decode(file_get_contents($path), true);
 
             // $result = $this->httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
             //     'replyToken' => $event['replyToken'],
@@ -179,7 +179,7 @@ class Webhook extends Controller
             //         ]
             //     ],
             // ]);
-            $message = $path;
+            $message = $flexTemplate;
             $textMessageBuilder = new TextMessageBuilder($message);
             $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
         } else {
