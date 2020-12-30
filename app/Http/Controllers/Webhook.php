@@ -185,7 +185,8 @@ class Webhook extends Controller
             // $this->addTransactions($userMessage, $event['replyToken']);
             $this->transactionsGateway->changeMode(1, $event['source']['userId']);
 
-            $message = "Silahkan ketik nominal ${userMessage}nya, kak!";
+            $message = $event['source']['userId'];
+            // $message = "Silahkan ketik nominal ${userMessage}nya, kak!";
 
             $textMessageBuilder = new TextMessageBuilder($message);
 
