@@ -195,7 +195,7 @@ class Webhook extends Controller
 
             $message = "Pengeluaran sebesar {$rupiah} sudah kami catat ya, kak. ";
 
-            $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002735);
+            $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002734);
 
             $this->transactionsGateway->saveTransaction((int)$msg[1], 1, $userId);
 
@@ -207,6 +207,21 @@ class Webhook extends Controller
             $multiMessageBuilder->add($textMessageBuilder);
             $multiMessageBuilder->add($stickerMessageBuilder);
             $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+        } else if (strtolower($userMessage) == 'riwayat') {
+            $path = storage_path() . '/json/transactions-flex.json';
+            $flexTemplate = file_get_contents($path);
+
+            $httpClient = new CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
+            $result = $httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
+                'replyToken' => $event['replyToken'],
+                'messages'   => [
+                    [
+                        'type'     => 'flex',
+                        'altText'  => 'Test Flex Message',
+                        'contents' => json_decode($flexTemplate)
+                    ]
+                ],
+            ]);
         }
     }
 
