@@ -130,11 +130,11 @@ class Webhook extends Controller
 
             // create welcome message
             $message  = "Halo kak, " . $profile['displayName'] . "!\n";
-            $message .= 'Kakak bisa ketik "Transaksi" untuk mencatat pengeluaran ataupun pemasukan.' . "\n";
-
+            $message .= 'Kakak bisa ketik "Transaksi" untuk mencatat pengeluaran ataupun pemasukan.';
             $textMessageBuilder = new TextMessageBuilder($message);
 
             $message1 = 'Kakak juga bisa lihat riwayat transaksi sesuai tanggal loh, ketik "Riwayat" diikuti dengan tanggal yang ingin kakak lihat.' . "\n";
+            $message1 .= "\n";
             $message1 .= 'Contoh "Riwayat 08/12/2020"';
             $textMessageBuilder1 = new TextMessageBuilder($message1);
 
@@ -160,5 +160,38 @@ class Webhook extends Controller
                 $profile['displayName']
             );
         }
+    }
+    private function textMessage($event)
+    {
+        $userMessage = $event['message']['text'];
+
+        if (strtolower($userMessage) == 'transaksi') {
+
+            $message = 'User ketik transaksi.';
+            $textMessageBuilder = new TextMessageBuilder($message);
+            $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
+        } else {
+            $message = 'User TIDAK ketik transaksi.';
+            $textMessageBuilder = new TextMessageBuilder($message);
+            $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
+        }
+    }
+
+    private function stickerMessage($event)
+    {
+        // create sticker message
+        $stickerMessageBuilder = new StickerMessageBuilder(1, 106);
+
+        // create text message
+        $message = 'Ketik "transaksi" kalau mau mencatat pengeluaran atau pemasukan kakak, yaa!';
+        $textMessageBuilder = new TextMessageBuilder($message);
+
+        // merge all message
+        $multiMessageBuilder = new MultiMessageBuilder();
+        $multiMessageBuilder->add($stickerMessageBuilder);
+        $multiMessageBuilder->add($textMessageBuilder);
+
+        // send message
+        $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
     }
 }
