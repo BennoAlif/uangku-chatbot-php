@@ -71,9 +71,10 @@
             {
                 "type": "button",
                 "action": {
-                    "type": "message",
+                    "type": "postback",
                     "label": "Pemasukan",
-                    "text": "pemasukan"
+                    "data": "pemasukan",
+                    "displayText": "Silahkan ketik nominal pemasukannya, kak."
                 },
                 "color": "#27AE60",
                 "style": "primary",
@@ -82,13 +83,28 @@
             {
                 "type": "button",
                 "action": {
-                    "type": "message",
+                    "type": "postback",
                     "label": "Pengeluaran",
-                    "text": "pengeluaran"
+                    "data": "pengeluaran",
+                    "displayText": "Silahkan ketik nominal pengeluarannya, kak."
                 },
                 "color": "#F63D5E",
                 "style": "primary",
                 "margin": "16px"
+            }
+        ]
+    },
+    "footer": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+            {
+                "type": "button",
+                "action": {
+                    "type": "message",
+                    "label": "Bantuan",
+                    "text": "Bantuan"
+                }
             }
         ]
     }
