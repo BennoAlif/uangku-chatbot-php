@@ -175,7 +175,7 @@ class Webhook extends Controller
         $msg = explode(" ", $userMessage);
 
         if (strtolower($msg[0]) == 'masuk') {
-            $message = "Tambah pemasukkan";
+            $message = "Tambah pemasukkan" . $msg[1];
 
 
             $textMessageBuilder = new TextMessageBuilder($message);
@@ -186,7 +186,7 @@ class Webhook extends Controller
             $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
             $this->transactionsGateway->changeMode(1, $event['source']['userId']);
         } else if (strtolower($msg[0]) == 'keluar') {
-            $message = "Tambah pengeluaran";
+            $message = "Tambah pengeluaran" . $msg[1];;
 
 
             $textMessageBuilder = new TextMessageBuilder($message);
