@@ -45,9 +45,9 @@ class Webhook extends Controller
      */
     private $userGateway;
     /**
-     * @var QuestionGateway
+     * @var TransactionsGateway
      */
-    private $questionGateway;
+    private $transactionsGateway;
     /**
      * @var array
      */
@@ -183,6 +183,15 @@ class Webhook extends Controller
             ]);
         } else if (strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
             $this->addTransactions($userMessage, $event['replyToken']);
+
+            $message = "Silahkan ketik nominal ${userMessage}nya, kak!";
+
+            $textMessageBuilder = new TextMessageBuilder($message);
+
+            // merge all message
+            $multiMessageBuilder = new MultiMessageBuilder();
+            $multiMessageBuilder->add($textMessageBuilder);
+            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
         }
     }
 
@@ -209,11 +218,11 @@ class Webhook extends Controller
         // create text message
 
         if (strtolower($msg) == "pemasukan") {
-            # code...
-            $message = $msg;
+            $message = "Silahkan ketik nominal pemasukannya, kak!";
         } else {
-            $message = $msg;
+            $message = "Silahkan ketik nominal pengeluarannya, kak!";
         }
+
         $textMessageBuilder = new TextMessageBuilder($message);
 
         // merge all message
