@@ -172,8 +172,6 @@ class Webhook extends Controller
         $userId = $this->user["id"];
         $mode = $this->user["transaction_mode"];
 
-        $transactionType = 2;
-
         if (strtolower($userMessage) == 'pemasukan') {
             global $transactionType;
             $transactionType = 0;
