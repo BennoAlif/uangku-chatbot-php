@@ -173,9 +173,9 @@ class Webhook extends Controller
         $mode = $this->user["transaction_mode"];
 
         if (strtolower($userMessage) == "pemasukan") {
-            $transactionType = 0;
+            return $transactionType = 0;
         } else if (strtolower($userMessage) == "pengeluaran") {
-            $transactionType = 1;
+            return $transactionType = 1;
         }
 
         if ($mode == 0) {
