@@ -25,7 +25,7 @@ class TransactionsGateway
     }
 
 
-    public function saveTransaction(int $nominal, string $type, int $userId)
+    public function saveTransaction(int $nominal, int $type, int $userId)
     {
         $this->db->table('transactions')
             ->insert([

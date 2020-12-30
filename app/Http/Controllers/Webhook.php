@@ -175,6 +175,8 @@ class Webhook extends Controller
         if ($mode == 1) {
             $numberMessage = (int)$userMessage;
             if ($numberMessage !== 0) {
+                $this->transactionsGateway->saveTransaction($numberMessage, 0, $userId);
+
                 $message = $numberMessage;
                 $message .= "\nValid";
 
@@ -186,7 +188,7 @@ class Webhook extends Controller
                 $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
             } else {
                 $message = $numberMessage;
-                $message .= "\nSedang dalam mode transaksi nih, kak. Silahkan ketik nominal yang valid, ya...";
+                $message .= "\nSedang dalam mode transaksi nih, kak. Silahkan ketik nominal yang valid, ya.";
 
                 $textMessageBuilder = new TextMessageBuilder($message);
 
