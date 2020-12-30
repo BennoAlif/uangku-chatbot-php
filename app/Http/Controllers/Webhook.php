@@ -172,6 +172,12 @@ class Webhook extends Controller
         $userId = $this->user["id"];
         $mode = $this->user["transaction_mode"];
 
+        if (strtolower($userMessage) == "pemasukan") {
+            $transactionType = 0;
+        } else if (strtolower($userMessage) == "pengeluaran") {
+            $transactionType = 1;
+        }
+
         if ($mode == 0) {
             if (strtolower($userMessage) == 'transaksi') {
                 $path = storage_path() . '/json/transactions-flex.json';
@@ -203,39 +209,32 @@ class Webhook extends Controller
                 $this->transactionsGateway->changeMode(1, $event['source']['userId']);
             }
         } else {
-            $message = "\nSedang dalam mode transaksi nih, kak. silakan ketik nominal yang valid, ya.";
+            $numberMessage = (int)$userMessage;
+            if ($numberMessage !== 0) {
+                // $this->transactionsGateway->saveTransaction($numberMessage, 0, $userId);
 
-            $textMessageBuilder = new TextMessageBuilder($message);
+                $message = $numberMessage;
+                $message .= "\nValid\n";
+                $message .= $transactionType;
+                $message .= "\nType";
 
-            // merge all message
-            $multiMessageBuilder = new MultiMessageBuilder();
-            $multiMessageBuilder->add($textMessageBuilder);
-            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+                $textMessageBuilder = new TextMessageBuilder($message);
+
+                // merge all message
+                $multiMessageBuilder = new MultiMessageBuilder();
+                $multiMessageBuilder->add($textMessageBuilder);
+                $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+            } else {
+                $message = "\nSedang dalam mode transaksi nih, kak. silakan ketik nominal yang valid, ya.";
+
+                $textMessageBuilder = new TextMessageBuilder($message);
+
+                // merge all message
+                $multiMessageBuilder = new MultiMessageBuilder();
+                $multiMessageBuilder->add($textMessageBuilder);
+                $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+            }
         }
-
-        //   if ($mode == 1) {
-        //     $numberMessage = (int)$userMessage;
-        //     if ($numberMessage !== 0) {
-        //         // $this->transactionsGateway->saveTransaction($numberMessage, 0, $userId);
-        //         if (strtolower($userMessage) == "pemasukan") {
-        //             $transactionType = 0;
-        //         } else if (strtolower($userMessage) == "pengeluaran") {
-        //             $transactionType = 1;
-        //         }
-
-        //         $message = $numberMessage;
-        //         $message .= "\nValid\n";
-        //         $message .= $transactionType;
-        //         $message .= "\nType";
-
-        //         $textMessageBuilder = new TextMessageBuilder($message);
-
-        //         // merge all message
-        //         $multiMessageBuilder = new MultiMessageBuilder();
-        //         $multiMessageBuilder->add($textMessageBuilder);
-        //         $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
-        //     } 
-        // }
     }
 
     private function stickerMessage($event)
