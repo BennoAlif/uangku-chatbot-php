@@ -171,12 +171,9 @@ class Webhook extends Controller
         $this->user = $this->userGateway->getUser($event['source']['userId']);
         $userId = $this->user["id"];
         $mode = $this->user["transaction_mode"];
+        $transactionType = 0;
 
-        if (strtolower($userMessage) == "pemasukan") {
-            $transactionType = 0;
-        } else if (strtolower($userMessage) == "pengeluaran") {
-            $transactionType = 1;
-        }
+
 
         if ($mode == 0) {
             if (strtolower($userMessage) == 'transaksi') {
@@ -195,7 +192,7 @@ class Webhook extends Controller
                     ],
                 ]);
                 $this->transactionsGateway->changeMode(0, $event['source']['userId']);
-            } else if (strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
+            } else if ($mode == 0 && strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
 
                 $message = "Ketik nominal {$userMessage}nya ya, kak. Jangan lupa dalam bentuk nomor.";
 
@@ -207,6 +204,29 @@ class Webhook extends Controller
                 $multiMessageBuilder->add($textMessageBuilder);
                 $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
                 $this->transactionsGateway->changeMode(1, $event['source']['userId']);
+            } else if ($mode == 1 && strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
+                $numberMessage = (int)$userMessage;
+
+                if ($numberMessage !== 0) {
+                    // $this->transactionsGateway->saveTransaction($numberMessage, 0, $userId);
+                    if (strtolower($userMessage) == "pemasukan") {
+                        $transactionType = 0;
+                    } else if (strtolower($userMessage) == "pengeluaran") {
+                        $transactionType = 1;
+                    }
+
+                    $message = $numberMessage;
+                    $message .= "\nValid\n";
+                    $message .= $transactionType;
+                    $message .= "\nType";
+
+                    $textMessageBuilder = new TextMessageBuilder($message);
+
+                    // merge all message
+                    $multiMessageBuilder = new MultiMessageBuilder();
+                    $multiMessageBuilder->add($textMessageBuilder);
+                    $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+                }
             }
         } else {
             $numberMessage = (int)$userMessage;
@@ -225,7 +245,7 @@ class Webhook extends Controller
                 $multiMessageBuilder->add($textMessageBuilder);
                 $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
             } else {
-                $message = "\nSedang dalam mode transaksi nih, kak. silakan ketik nominal yang valid, ya.";
+                $message = "Sedang dalam mode transaksi nih, kak. silakan ketik nominal yang valid, ya.";
 
                 $textMessageBuilder = new TextMessageBuilder($message);
 
