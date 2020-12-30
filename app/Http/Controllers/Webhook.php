@@ -182,7 +182,7 @@ class Webhook extends Controller
                 ],
             ]);
         } else if (strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
-            $this->addTransactions($userMessage, $event['replyToken']);
+            // $this->addTransactions($userMessage, $event['replyToken']);
 
             $message = "Silahkan ketik nominal ${userMessage}nya, kak!";
 
