@@ -188,22 +188,23 @@ class Webhook extends Controller
                     ]
                 ],
             ]);
-            if (strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
-                if (strtolower($userMessage) == "pemasukan") {
-                    $transactionType = 0;
-                } else if (strtolower($userMessage) == "pengeluaran") {
-                    $transactionType = 1;
-                }
-                $message = $transactionType;
-
-                $textMessageBuilder = new TextMessageBuilder($message);
-
-                // merge all message
-                $multiMessageBuilder = new MultiMessageBuilder();
-                $multiMessageBuilder->add($textMessageBuilder);
-                $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
-                $this->transactionsGateway->changeMode(1, $event['source']['userId']);
+            $this->transactionsGateway->changeMode(0, $event['source']['userId']);
+        } else if (strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
+            if (strtolower($userMessage) == "pemasukan") {
+                $transactionType = 0;
+            } else if (strtolower($userMessage) == "pengeluaran") {
+                $transactionType = 1;
             }
+            $message = $transactionType;
+
+
+            $textMessageBuilder = new TextMessageBuilder($message);
+
+            // merge all message
+            $multiMessageBuilder = new MultiMessageBuilder();
+            $multiMessageBuilder->add($textMessageBuilder);
+            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+            $this->transactionsGateway->changeMode(1, $event['source']['userId']);
         } else if ($mode == 1) {
             $numberMessage = (int)$userMessage;
             if ($numberMessage !== 0) {
