@@ -129,8 +129,11 @@ class Webhook extends Controller
             $profile = $res->getJSONDecodedBody();
 
             // create welcome message
-            $message  = "Salam kenal, " . $profile['displayName'] . "!\n";
-            $message .= "Silakan kirim pesan \"MULAI\" untuk memulai kuis Tebak Kode.";
+            $message  = "Halo kak, " . $profile['displayName'] . "!\n";
+            $message .= 'Kakak bisa ketik "Transaksi" untuk mencatat pengeluaran ataupun pemasukan.' . "!\n";
+            $message .= 'Kakak juga bisa lihat riwayat transaksi sesuai tanggal loh, ketik "Riwayat" diikuti dengan tanggal yang ingin kakak lihat.' . "!\n";
+            $message .= 'Contoh "Riwayat 08/12/2020"' . "!\n";
+            $message .= 'Kalau kakak lupa perintahnya apa aja, kakak tinggal ketik "Bantuan", nanti keluar kok hal yang harus kakak ketik dan fungsinya.';
             $textMessageBuilder = new TextMessageBuilder($message);
 
             // create sticker message
