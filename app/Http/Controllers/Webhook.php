@@ -217,7 +217,6 @@ class Webhook extends Controller
                 ],
             ]);
         } else if (strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
-            $transactionType = $userMessage;
             if (strtolower($userMessage) == "pemasukan") {
                 $transactionType = 0;
             } else if (strtolower($userMessage) == "pengeluaran") {
