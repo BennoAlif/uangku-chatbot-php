@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Gateway\EventLogGateway;
 use App\Gateway\QuestionGateway;
 use App\Gateway\UserGateway;
+use App\Gateway\TransactionsGateway;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Log\Logger;
