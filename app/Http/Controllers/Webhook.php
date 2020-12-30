@@ -170,7 +170,6 @@ class Webhook extends Controller
 
         $this->user = $this->userGateway->getUser($event['source']['userId']);
         $userId = $this->user["id"];
-        $mode = $this->user["transaction_mode"];
 
         $msg = explode(" ", $userMessage);
 
