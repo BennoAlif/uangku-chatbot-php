@@ -30,8 +30,7 @@ class TransactionsGateway
     public function getTransactions(string $userId)
     {
         $transaction = $this->db->table('transactions')
-            ->where('user_id', $userId)
-            ->first();
+            ->where('user_id', $userId);
 
         if ($transaction) {
             return (array) $transaction;
