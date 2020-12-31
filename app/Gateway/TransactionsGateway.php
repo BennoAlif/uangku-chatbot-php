@@ -29,7 +29,7 @@ class TransactionsGateway
 
     public function getTransactions(string $userId)
     {
-        $transaction = $this->db->table('transactions')->select("sum(nominal) as nominal")
+        $transaction = $this->db->table('transactions')->sum("nominal")
             ->where('user_id', $userId)
             ->first();
 
