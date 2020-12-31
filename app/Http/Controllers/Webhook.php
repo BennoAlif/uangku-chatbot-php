@@ -245,7 +245,7 @@ class Webhook extends Controller
 
             $newJson = json_encode($json);
 
-            file_put_contents(file_get_contents($path), $newJson);
+            file_put_contents($path, $newJson);
 
             $flexTemplate = file_get_contents($path);
 
