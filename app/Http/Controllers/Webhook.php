@@ -239,13 +239,13 @@ class Webhook extends Controller
         } else if (strtolower($userMessage) == 'riwayat') {
             $path = storage_path() . '/json/transactions-flex.json';
             // $flexTemplate = file_get_contents($path);
-            $json = json_decode(file_get_contents($path), true);
+            // $json = json_decode(file_get_contents($path), true);
 
-            $json["body"]["contents"[1]]["text"] = "Benno";
+            // $json["body"]["contents"[1]]["text"] = "Benno";
 
-            $newJson = json_encode($json);
+            // $newJson = json_encode($json);
 
-            file_put_contents($path, $newJson);
+            // file_put_contents($path, $newJson);
 
             $flexTemplate = file_get_contents($path);
 
