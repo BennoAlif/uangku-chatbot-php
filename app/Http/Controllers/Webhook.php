@@ -185,22 +185,33 @@ class Webhook extends Controller
         if (strtolower($msg[0]) == 'masuk') {
             if (isset($msg[1])) {
                 $nominal = (int)$msg[1];
+                if ($nominal == 0) {
 
-                $rupiah = $this->rupiah($nominal);
+                    $message = "Kayaknya nominal yang kakak ketik gak valid deh. Nominalnya gak boleh 0 atau pake huruf ya, kak.";
 
-                $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002735);
-                $message = "Pemasukan sebesar {$rupiah} sudah kami catat ya, kak.\n";
-                $message .= $nominal;
+                    $textMessageBuilder = new TextMessageBuilder($message);
 
-                $textMessageBuilder = new TextMessageBuilder($message);
+                    // merge all message
+                    $multiMessageBuilder = new MultiMessageBuilder();
+                    $multiMessageBuilder->add($textMessageBuilder);
+                    $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+                } else {
+                    $rupiah = $this->rupiah($nominal);
 
-                // merge all message
-                $multiMessageBuilder = new MultiMessageBuilder();
-                $multiMessageBuilder->add($textMessageBuilder);
-                $multiMessageBuilder->add($stickerMessageBuilder);
-                $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+                    $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002735);
+                    $message = "Pemasukan sebesar {$rupiah} sudah kami catat ya, kak.\n";
+                    $message .= $nominal;
 
-                // $this->transactionsGateway->saveTransaction($nominal, 0, $userId);
+                    $textMessageBuilder = new TextMessageBuilder($message);
+
+                    // merge all message
+                    $multiMessageBuilder = new MultiMessageBuilder();
+                    $multiMessageBuilder->add($textMessageBuilder);
+                    $multiMessageBuilder->add($stickerMessageBuilder);
+                    $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+
+                    $this->transactionsGateway->saveTransaction($nominal, 0, $userId);
+                }
             } else {
                 $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002739);
                 $message = "Sepertinya kakak belum ngetik nominalnya, coba ulang lagi ya, kak.\n";
@@ -217,20 +228,34 @@ class Webhook extends Controller
             }
         } else if (strtolower($msg[0]) == 'keluar') {
             if (isset($msg[1])) {
-                $rupiah = $this->rupiah($msg[1]);
+                $nominal = (int)$msg[1];
 
-                $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002734);
-                $message = "Pengeluaran sebesar {$rupiah} sudah kami catat ya, kak. ";
+                if ($nominal == 0) {
 
-                $textMessageBuilder = new TextMessageBuilder($message);
+                    $message = "Kayaknya nominal yang kakak ketik gak valid deh. Nominalnya gak boleh 0 atau pake huruf ya, kak.";
 
-                // merge all message
-                $multiMessageBuilder = new MultiMessageBuilder();
-                $multiMessageBuilder->add($textMessageBuilder);
-                $multiMessageBuilder->add($stickerMessageBuilder);
-                $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+                    $textMessageBuilder = new TextMessageBuilder($message);
 
-                $this->transactionsGateway->saveTransaction((int)$msg[1], 1, $userId);
+                    // merge all message
+                    $multiMessageBuilder = new MultiMessageBuilder();
+                    $multiMessageBuilder->add($textMessageBuilder);
+                    $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+                } else {
+                    $rupiah = $nominal;
+
+                    $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002734);
+                    $message = "Pengeluaran sebesar {$rupiah} sudah kami catat ya, kak. ";
+
+                    $textMessageBuilder = new TextMessageBuilder($message);
+
+                    // merge all message
+                    $multiMessageBuilder = new MultiMessageBuilder();
+                    $multiMessageBuilder->add($textMessageBuilder);
+                    $multiMessageBuilder->add($stickerMessageBuilder);
+                    $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+
+                    $this->transactionsGateway->saveTransaction($nominal, 1, $userId);
+                }
             } else {
                 $message = "Sepertinya kakak belum ngetik nominalnya, coba ulang lagi ya, kak.\n";
                 $message .= "Contoh: keluar 20000";
