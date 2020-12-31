@@ -360,7 +360,7 @@ class Webhook extends Controller
         $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002759);
 
         // create text message
-        $message = 'Ketik "transaksi" kalau mau mencatat pengeluaran atau pemasukan kakak, yaa!';
+        $message = 'Ketik "bantuan" kalau kakak lupa perintahnya, yaa!';
         $textMessageBuilder = new TextMessageBuilder($message);
 
         // merge all message
