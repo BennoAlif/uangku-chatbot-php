@@ -103,23 +103,55 @@ class Webhook extends Controller
 
         if (is_array($data['events'])) {
             foreach ($data['events'] as $event) {
-                // skip group and room event
-                if (!isset($event['source']['userId'])) continue;
+                if (
+                    $event['source']['type'] == 'group' or
+                    $event['source']['type'] == 'room'
+                ) {
+                    $message  = "Halo semuanya, makasih ya udah masukin aku ke circle kalian!\n";
+                    $message .= 'Kakak harus follow aku dulu kalau mau pakek semua perintahnya.' . "\n";
+                    $message .= 'Aku itu bot yang bisa mencatat transaksi kakak, entah itu pemasukan atau pengeluaran.' . "\n";
+                    $message .= 'Kakak tinggal ketik "masuk" atau "keluar" dilanjutkan dengan nominalnya, ' . "\n";
+                    $message .= 'contoh: masuk 2000 ' . "\n";
+                    $textMessageBuilder = new TextMessageBuilder($message);
 
-                // get user data from database
-                $this->user = $this->userGateway->getUser($event['source']['userId']);
+                    $message1 = 'Kakak juga bisa lihat riwayat transaksi, loh.' . "\n";
+                    $message1 .= "Nanti bakal dikasih tau total pengeluaran dan pemasukan kakak selama ini.";
+                    $textMessageBuilder1 = new TextMessageBuilder($message1);
 
-                // if user not registered
-                if (!$this->user) $this->followCallback($event);
-                else {
-                    // respond event
-                    if ($event['type'] == 'message') {
-                        if (method_exists($this, $event['message']['type'] . 'Message')) {
-                            $this->{$event['message']['type'] . 'Message'}($event);
-                        }
-                    } else {
-                        if (method_exists($this, $event['type'] . 'Callback')) {
-                            $this->{$event['type'] . 'Callback'}($event);
+                    $message2 = 'Kalau kakak lupa perintahnya apa aja, kakak tinggal ketik "Bantuan", nanti keluar kok hal yang harus kakak ketik dan fungsinya.';
+                    $textMessageBuilder2 = new TextMessageBuilder($message2);
+
+                    // create sticker message
+                    $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002759);
+
+                    // merge all message
+                    $multiMessageBuilder = new MultiMessageBuilder();
+                    $multiMessageBuilder->add($textMessageBuilder);
+                    $multiMessageBuilder->add($textMessageBuilder1);
+                    $multiMessageBuilder->add($textMessageBuilder2);
+                    $multiMessageBuilder->add($stickerMessageBuilder);
+
+                    // send reply message
+                    $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+                } else {
+                    // skip group and room event
+                    if (!isset($event['source']['userId'])) continue;
+
+                    // get user data from database
+                    $this->user = $this->userGateway->getUser($event['source']['userId']);
+
+                    // if user not registered
+                    if (!$this->user) $this->followCallback($event);
+                    else {
+                        // respond event
+                        if ($event['type'] == 'message') {
+                            if (method_exists($this, $event['message']['type'] . 'Message')) {
+                                $this->{$event['message']['type'] . 'Message'}($event);
+                            }
+                        } else {
+                            if (method_exists($this, $event['type'] . 'Callback')) {
+                                $this->{$event['type'] . 'Callback'}($event);
+                            }
                         }
                     }
                 }
@@ -140,12 +172,13 @@ class Webhook extends Controller
 
             // create welcome message
             $message  = "Halo kak, " . $profile['displayName'] . "!\n";
-            $message .= 'Kakak bisa ketik "Transaksi" untuk mencatat pengeluaran ataupun pemasukan.';
+            $message .= 'Aku itu bot yang bisa mencatat transaksi kakak, entah itu pemasukan atau pengeluaran.';
+            $message .= 'Kakak tinggal ketik "masuk" atau "keluar" dilanjutkan dengan nominalnya, ' . "\n";
+            $message .= 'contoh: masuk 2000 ' . "\n";
             $textMessageBuilder = new TextMessageBuilder($message);
 
-            $message1 = 'Kakak juga bisa lihat riwayat transaksi sesuai tanggal loh, ketik "Riwayat" diikuti dengan tanggal yang ingin kakak lihat.' . "\n";
-            $message1 .= "\n";
-            $message1 .= 'Contoh "Riwayat 08/12/2020"';
+            $message1 = 'Kakak juga bisa lihat riwayat transaksi, loh.' . "\n";
+            $message1 .= "Nanti bakal dikasih tau total pengeluaran dan pemasukan kakak selama ini.";
             $textMessageBuilder1 = new TextMessageBuilder($message1);
 
             $message2 = 'Kalau kakak lupa perintahnya apa aja, kakak tinggal ketik "Bantuan", nanti keluar kok hal yang harus kakak ketik dan fungsinya.';
