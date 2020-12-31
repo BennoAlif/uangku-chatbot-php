@@ -181,6 +181,14 @@ class Webhook extends Controller
                 $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002735);
                 $message = "Pemasukan sebesar {$rupiah} sudah kami catat ya, kak. ";
 
+                $textMessageBuilder = new TextMessageBuilder($message);
+
+                // merge all message
+                $multiMessageBuilder = new MultiMessageBuilder();
+                $multiMessageBuilder->add($textMessageBuilder);
+                $multiMessageBuilder->add($stickerMessageBuilder);
+                $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+
                 $this->transactionsGateway->saveTransaction((int)$msg[1], 0, $userId);
             } else {
                 $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002739);
@@ -202,6 +210,15 @@ class Webhook extends Controller
 
                 $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002734);
                 $message = "Pengeluaran sebesar {$rupiah} sudah kami catat ya, kak. ";
+
+                $textMessageBuilder = new TextMessageBuilder($message);
+
+                // merge all message
+                $multiMessageBuilder = new MultiMessageBuilder();
+                $multiMessageBuilder->add($textMessageBuilder);
+                $multiMessageBuilder->add($stickerMessageBuilder);
+                $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+
                 $this->transactionsGateway->saveTransaction((int)$msg[1], 1, $userId);
             } else {
                 $message = "Sepertinya kakak belum ngetik nominalnya, coba ulang lagi ya, kak.\n";
