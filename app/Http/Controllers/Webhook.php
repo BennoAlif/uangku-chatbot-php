@@ -104,8 +104,7 @@ class Webhook extends Controller
         if (is_array($data['events'])) {
             foreach ($data['events'] as $event) {
                 if (
-                    $event['source']['type'] == 'group' or
-                    $event['source']['type'] == 'room'
+                    $event['type'] == 'join'
                 ) {
                     $message  = "Halo semuanya, makasih ya udah masukin aku ke circle kalian!\n";
                     $message .= 'Kakak harus follow aku dulu kalau mau pakek semua perintahnya.' . "\n";
@@ -172,7 +171,7 @@ class Webhook extends Controller
 
             // create welcome message
             $message  = "Halo kak, " . $profile['displayName'] . "!\n";
-            $message .= 'Aku itu bot yang bisa mencatat transaksi kakak, entah itu pemasukan atau pengeluaran.';
+            $message .= 'Aku itu bot yang bisa mencatat transaksi kakak, entah itu pemasukan atau pengeluaran.' . "\n";
             $message .= 'Kakak tinggal ketik "masuk" atau "keluar" dilanjutkan dengan nominalnya, ' . "\n";
             $message .= 'contoh: masuk 2000 ' . "\n";
             $textMessageBuilder = new TextMessageBuilder($message);
