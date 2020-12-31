@@ -31,8 +31,7 @@ class TransactionsGateway
     {
         $transaction = $this->db->table('transactions')
             ->where('user_id', $userId)
-            ->sum("nominal")
-            ->first();
+            ->sum("nominal");
 
         if ($transaction) {
             return (array) $transaction;
