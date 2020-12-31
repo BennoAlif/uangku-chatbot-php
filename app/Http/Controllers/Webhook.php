@@ -184,6 +184,7 @@ class Webhook extends Controller
 
         if (strtolower($msg[0]) == 'masuk') {
             if (isset($msg[1])) {
+                $nominal = (int)$msg[1];
 
                 $rupiah = $this->rupiah($msg[1]);
 
@@ -199,7 +200,7 @@ class Webhook extends Controller
                 $multiMessageBuilder->add($stickerMessageBuilder);
                 $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
 
-                // $this->transactionsGateway->saveTransaction((int)$msg[1], 0, $userId);
+                $this->transactionsGateway->saveTransaction($nominal, 0, $userId);
             } else {
                 $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002739);
                 $message = "Sepertinya kakak belum ngetik nominalnya, coba ulang lagi ya, kak.\n";
