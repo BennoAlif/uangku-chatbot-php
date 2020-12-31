@@ -178,15 +178,17 @@ class Webhook extends Controller
 
                 $rupiah = $this->rupiah($msg[1]);
 
+                $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002735);
                 $message = "Pemasukan sebesar {$rupiah} sudah kami catat ya, kak. ";
 
                 $this->transactionsGateway->saveTransaction((int)$msg[1], 0, $userId);
             }
 
-            $message = "Sepertinya kakak belum ngetik nominalnya, coba ulang lagi ya, kak. ";
+            $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002739);
+            $message = "Sepertinya kakak belum ngetik nominalnya, coba ulang lagi ya, kak.\n";
+            $message .= "Contoh: masuk 20000";
 
 
-            $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002735);
             $textMessageBuilder = new TextMessageBuilder($message);
 
             // merge all message
@@ -198,13 +200,15 @@ class Webhook extends Controller
             if (isset($msg[1])) {
                 $rupiah = $this->rupiah($msg[1]);
 
+                $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002734);
                 $message = "Pengeluaran sebesar {$rupiah} sudah kami catat ya, kak. ";
                 $this->transactionsGateway->saveTransaction((int)$msg[1], 1, $userId);
             }
 
-            $message = "Sepertinya kakak belum ngetik nominalnya, coba ulang lagi ya, kak. ";
+            $message = "Sepertinya kakak belum ngetik nominalnya, coba ulang lagi ya, kak.\n";
+            $message .= "Contoh: keluar 20000";
 
-            $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002734);
+            $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002739);
 
 
             $textMessageBuilder = new TextMessageBuilder($message);
