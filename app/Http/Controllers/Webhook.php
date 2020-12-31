@@ -55,7 +55,11 @@ class Webhook extends Controller
     /**
      * @var array
      */
-    private $transaction;
+    private $income;
+    /**
+     * @var array
+     */
+    private $expense;
 
 
     public function __construct(
@@ -242,9 +246,9 @@ class Webhook extends Controller
                 $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
             }
         } else if (strtolower($userMessage) == 'riwayat') {
-            $this->transaction = $this->transactionsGateway->getTransactions($userId);
+            $this->expense = $this->transactionsGateway->getExpense($userId);
 
-            $message = implode(" ", $this->transaction);
+            $message = implode(" ", $this->expense);
             $textMessageBuilder = new TextMessageBuilder($message);
 
             // merge all message

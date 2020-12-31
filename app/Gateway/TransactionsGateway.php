@@ -27,14 +27,29 @@ class TransactionsGateway
             ]);
     }
 
-    public function getTransactions(string $userId)
+    public function getIncome(string $userId)
     {
-        $transaction = $this->db->table('transactions')
+        $income = $this->db->table('transactions')
             ->where('user_id', $userId)
+            ->where('type', 0)
             ->sum("nominal");
 
-        if ($transaction) {
-            return (array) $transaction;
+        if ($income) {
+            return (array) $income;
+        }
+
+        return null;
+    }
+
+    public function getExpense(string $userId)
+    {
+        $expense = $this->db->table('transactions')
+            ->where('user_id', $userId)
+            ->where('type', 1)
+            ->sum("nominal");
+
+        if ($expense) {
+            return (array) $expense;
         }
 
         return null;
