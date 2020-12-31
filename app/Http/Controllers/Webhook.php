@@ -246,20 +246,24 @@ class Webhook extends Controller
                 $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
             }
         } else if (strtolower($userMessage) == 'riwayat') {
+            $this->income = $this->transactionsGateway->getIncome($userId);
             $this->expense = $this->transactionsGateway->getExpense($userId);
 
-            $message = implode(" ", $this->expense);
-            $textMessageBuilder = new TextMessageBuilder($message);
+            // $message = implode(" ", $this->expense);
+            // $textMessageBuilder = new TextMessageBuilder($message);
 
-            // merge all message
-            $multiMessageBuilder = new MultiMessageBuilder();
-            $multiMessageBuilder->add($textMessageBuilder);
+            // // merge all message
+            // $multiMessageBuilder = new MultiMessageBuilder();
+            // $multiMessageBuilder->add($textMessageBuilder);
 
-            // send message
-            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+            // // send message
+            // $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+
             $path = storage_path() . '/json/transactions-flex.json';
             $flexTemplate = json_decode(file_get_contents($path));
             $flexTemplate->body->contents[1]->text = $name;
+            $flexTemplate->body->contents[5]->contents[0]->contents[1]->text = implode(" ", $this->income);
+            $flexTemplate->body->contents[5]->contents[1]->contents[1]->text = implode(" ", $this->expense);
 
             $httpClient = new CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
             $result = $httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
