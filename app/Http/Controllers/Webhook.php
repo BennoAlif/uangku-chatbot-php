@@ -182,20 +182,20 @@ class Webhook extends Controller
                 $message = "Pemasukan sebesar {$rupiah} sudah kami catat ya, kak. ";
 
                 $this->transactionsGateway->saveTransaction((int)$msg[1], 0, $userId);
+            } else {
+                $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002739);
+                $message = "Sepertinya kakak belum ngetik nominalnya, coba ulang lagi ya, kak.\n";
+                $message .= "Contoh: masuk 20000";
+
+
+                $textMessageBuilder = new TextMessageBuilder($message);
+
+                // merge all message
+                $multiMessageBuilder = new MultiMessageBuilder();
+                $multiMessageBuilder->add($textMessageBuilder);
+                $multiMessageBuilder->add($stickerMessageBuilder);
+                $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
             }
-
-            $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002739);
-            $message = "Sepertinya kakak belum ngetik nominalnya, coba ulang lagi ya, kak.\n";
-            $message .= "Contoh: masuk 20000";
-
-
-            $textMessageBuilder = new TextMessageBuilder($message);
-
-            // merge all message
-            $multiMessageBuilder = new MultiMessageBuilder();
-            $multiMessageBuilder->add($textMessageBuilder);
-            $multiMessageBuilder->add($stickerMessageBuilder);
-            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
         } else if (strtolower($msg[0]) == 'keluar') {
             if (isset($msg[1])) {
                 $rupiah = $this->rupiah($msg[1]);
@@ -203,22 +203,22 @@ class Webhook extends Controller
                 $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002734);
                 $message = "Pengeluaran sebesar {$rupiah} sudah kami catat ya, kak. ";
                 $this->transactionsGateway->saveTransaction((int)$msg[1], 1, $userId);
+            } else {
+                $message = "Sepertinya kakak belum ngetik nominalnya, coba ulang lagi ya, kak.\n";
+                $message .= "Contoh: keluar 20000";
+
+                $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002739);
+
+
+                $textMessageBuilder = new TextMessageBuilder($message);
+
+
+                // merge all message
+                $multiMessageBuilder = new MultiMessageBuilder();
+                $multiMessageBuilder->add($textMessageBuilder);
+                $multiMessageBuilder->add($stickerMessageBuilder);
+                $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
             }
-
-            $message = "Sepertinya kakak belum ngetik nominalnya, coba ulang lagi ya, kak.\n";
-            $message .= "Contoh: keluar 20000";
-
-            $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002739);
-
-
-            $textMessageBuilder = new TextMessageBuilder($message);
-
-
-            // merge all message
-            $multiMessageBuilder = new MultiMessageBuilder();
-            $multiMessageBuilder->add($textMessageBuilder);
-            $multiMessageBuilder->add($stickerMessageBuilder);
-            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
         } else if (strtolower($userMessage) == 'riwayat') {
             $path = storage_path() . '/json/transactions-flex.json';
             $flexTemplate = file_get_contents($path);
