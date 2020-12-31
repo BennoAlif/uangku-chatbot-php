@@ -247,7 +247,7 @@ class Webhook extends Controller
 
             // file_put_contents($path, $newJson);
 
-            $flexTemplate = file_get_contents($path);
+            $flexTemplate = json_decode(file_get_contents($path));
 
             $httpClient = new CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
             $result = $httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
@@ -256,7 +256,7 @@ class Webhook extends Controller
                     [
                         'type'     => 'flex',
                         'altText'  => 'Test Flex Message',
-                        'contents' => json_decode($flexTemplate)
+                        'contents' => $flexTemplate
                     ]
                 ],
             ]);
