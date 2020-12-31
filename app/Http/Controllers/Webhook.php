@@ -186,7 +186,7 @@ class Webhook extends Controller
             if (isset($msg[1])) {
                 $nominal = (int)$msg[1];
 
-                $rupiah = $this->rupiah($msg[1]);
+                $rupiah = $this->rupiah($nominal);
 
                 $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002735);
                 $message = "Pemasukan sebesar {$rupiah} sudah kami catat ya, kak.\n";
