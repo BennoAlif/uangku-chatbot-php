@@ -247,8 +247,7 @@ class Webhook extends Controller
             print_r($this->transaction);
             var_dump($this->transaction);
 
-            $message = print_r($this->transaction);
-            $message .= var_dump($this->transaction);;
+            $message = var_dump($this->transaction);
             $textMessageBuilder = new TextMessageBuilder($message);
 
             // merge all message
