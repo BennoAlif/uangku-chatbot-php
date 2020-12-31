@@ -244,10 +244,7 @@ class Webhook extends Controller
         } else if (strtolower($userMessage) == 'riwayat') {
             $this->transaction = $this->transactionsGateway->getTransactions($userId);
 
-            print_r($this->transaction);
-            var_dump($this->transaction);
-
-            $message = var_dump($this->transaction);
+            $message = $this->transaction["id"];
             $textMessageBuilder = new TextMessageBuilder($message);
 
             // merge all message
