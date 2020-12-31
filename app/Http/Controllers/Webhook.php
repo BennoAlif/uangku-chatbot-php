@@ -199,8 +199,7 @@ class Webhook extends Controller
                     $rupiah = $this->rupiah($nominal);
 
                     $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002735);
-                    $message = "Pemasukan sebesar {$rupiah} sudah kami catat ya, kak.\n";
-                    $message .= $nominal;
+                    $message = "Pemasukan sebesar {$rupiah} sudah kami catat ya, kak.";
 
                     $textMessageBuilder = new TextMessageBuilder($message);
 
@@ -214,7 +213,7 @@ class Webhook extends Controller
                 }
             } else {
                 $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002739);
-                $message = "Sepertinya kakak belum ngetik nominalnya, coba ulang lagi ya, kak.\n";
+                $message = "Kayaknya kakak belum ngetik nominalnya, coba ulang lagi ya, kak.\n";
                 $message .= "Contoh: masuk 20000";
 
 
@@ -257,7 +256,7 @@ class Webhook extends Controller
                     $this->transactionsGateway->saveTransaction($nominal, 1, $userId);
                 }
             } else {
-                $message = "Sepertinya kakak belum ngetik nominalnya, coba ulang lagi ya, kak.\n";
+                $message = "Kayaknya kakak belum ngetik nominalnya, coba ulang lagi ya, kak.\n";
                 $message .= "Contoh: keluar 20000";
 
                 $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002739);
@@ -276,16 +275,6 @@ class Webhook extends Controller
             $this->income = $this->transactionsGateway->getIncome($userId);
             $this->expense = $this->transactionsGateway->getExpense($userId);
 
-            // $message = implode(" ", $this->expense);
-            // $textMessageBuilder = new TextMessageBuilder($message);
-
-            // // merge all message
-            // $multiMessageBuilder = new MultiMessageBuilder();
-            // $multiMessageBuilder->add($textMessageBuilder);
-
-            // // send message
-            // $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
-
             $path = storage_path() . '/json/transactions-flex.json';
             $flexTemplate = json_decode(file_get_contents($path));
             $flexTemplate->body->contents[1]->text = $name;
@@ -298,11 +287,42 @@ class Webhook extends Controller
                 'messages'   => [
                     [
                         'type'     => 'flex',
-                        'altText'  => 'Test Flex Message',
+                        'altText'  => 'Riwayat Semua Transaksi',
                         'contents' => $flexTemplate
                     ]
                 ],
             ]);
+        } else if (strtolower($userMessage) == 'bantuan') {
+            $message = 'Halo, kak. Ini list perintah yang aku ngerti:\n';
+            $message .= '"masuk {nominal}" untuk mencatat transaksi pemasukan, contoh: masuk 20000\n';
+            $message .= '"keluar {nominal}" untuk mencatat transaksi pengeluaran, contoh: keluar 20000\n';
+            $message .= '"riwayat" untuk melihat total pemasukan dan pengeluaran.';
+
+            $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002744);
+
+
+            $textMessageBuilder = new TextMessageBuilder($message);
+
+
+            // merge all message
+            $multiMessageBuilder = new MultiMessageBuilder();
+            $multiMessageBuilder->add($textMessageBuilder);
+            $multiMessageBuilder->add($stickerMessageBuilder);
+            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+        } else {
+            $message = 'Kayaknya aku belum tau artinya deh, coba ketik "bantuan" untuk liat perintah yang aku ngerti ya, kak.';
+
+            $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002744);
+
+
+            $textMessageBuilder = new TextMessageBuilder($message);
+
+
+            // merge all message
+            $multiMessageBuilder = new MultiMessageBuilder();
+            $multiMessageBuilder->add($textMessageBuilder);
+            $multiMessageBuilder->add($stickerMessageBuilder);
+            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
         }
     }
 

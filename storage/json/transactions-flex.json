@@ -6,7 +6,7 @@
         "contents": [
             {
                 "type": "text",
-                "text": "Riwayat Transaksi",
+                "text": "Riwayat Semua Transaksi",
                 "weight": "regular",
                 "color": "#1DB446",
                 "size": "sm"
@@ -48,7 +48,7 @@
                         "contents": [
                             {
                                 "type": "text",
-                                "text": "Pemasukan",
+                                "text": "Total pemasukan",
                                 "size": "md",
                                 "color": "#555555",
                                 "flex": 0
@@ -68,7 +68,7 @@
                         "contents": [
                             {
                                 "type": "text",
-                                "text": "Pengeluaran",
+                                "text": "Total pengeluaran",
                                 "size": "md",
                                 "color": "#555555"
                             },
