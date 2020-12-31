@@ -26,4 +26,17 @@ class TransactionsGateway
                 'user_id' => $userId
             ]);
     }
+
+    public function getTransactions(string $userId)
+    {
+        $transaction = $this->db->table('transactions')
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($transaction) {
+            return (array) $transaction;
+        }
+
+        return null;
+    }
 }

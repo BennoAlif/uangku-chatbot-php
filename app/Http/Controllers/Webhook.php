@@ -52,6 +52,10 @@ class Webhook extends Controller
      * @var array
      */
     private $user;
+    /**
+     * @var array
+     */
+    private $transaction;
 
 
     public function __construct(
@@ -238,8 +242,17 @@ class Webhook extends Controller
                 $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
             }
         } else if (strtolower($userMessage) == 'riwayat') {
+            $this->transaction = $this->transactionsGateway->getTransactions($userId);
 
+            $message = implode(" ",);
+            $textMessageBuilder = new TextMessageBuilder($message);
 
+            // merge all message
+            $multiMessageBuilder = new MultiMessageBuilder();
+            $multiMessageBuilder->add($textMessageBuilder);
+
+            // send message
+            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
             $path = storage_path() . '/json/transactions-flex.json';
             $flexTemplate = json_decode(file_get_contents($path));
             $flexTemplate->body->contents[1]->text = $name;
@@ -257,91 +270,6 @@ class Webhook extends Controller
             ]);
         }
     }
-
-
-    // private function textMessage1($event)
-    // {
-    //     $userMessage = $event['message']['text'];
-
-    //     $this->user = $this->userGateway->getUser($event['source']['userId']);
-    //     $userId = $this->user["id"];
-    //     $mode = $this->user["transaction_mode"];
-
-    //     if (strtolower($userMessage) == 'transaksi') {
-    //         $path = storage_path() . '/json/transactions-flex.json';
-    //         $flexTemplate = file_get_contents($path);
-
-    //         $httpClient = new CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
-    //         $result = $httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
-    //             'replyToken' => $event['replyToken'],
-    //             'messages'   => [
-    //                 [
-    //                     'type'     => 'flex',
-    //                     'altText'  => 'Test Flex Message',
-    //                     'contents' => json_decode($flexTemplate)
-    //                 ]
-    //             ],
-    //         ]);
-    //         $this->transactionsGateway->changeMode(0, $event['source']['userId']);
-    //     } else if (strtolower($userMessage) == 'pemasukan' || strtolower($userMessage) == 'pengeluaran') {
-    //         $message = "Ketik nominal {$userMessage}nya ya, kak.";
-
-
-    //         $textMessageBuilder = new TextMessageBuilder($message);
-
-    //         // merge all message
-    //         $multiMessageBuilder = new MultiMessageBuilder();
-    //         $multiMessageBuilder->add($textMessageBuilder);
-    //         $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
-    //         $this->transactionsGateway->changeMode(1, $event['source']['userId']);
-    //     }
-
-    //     if ($mode == 1) {
-    //         $message = $transactionType;
-
-    //         $textMessageBuilder = new TextMessageBuilder($message);
-
-    //         // merge all message
-    //         $multiMessageBuilder = new MultiMessageBuilder();
-    //         $multiMessageBuilder->add($textMessageBuilder);
-    //         $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
-
-
-    //         // $numberMessage = (int)$userMessage;
-    //         // if ($numberMessage !== 0) {
-    //         //     // $this->transactionsGateway->saveTransaction($numberMessage, 0, $userId);
-    //         //     if (strtolower($userMessage) == "pemasukan") {
-    //         //         $transactionType = 0;
-    //         //     } else if (strtolower($userMessage) == "pengeluaran") {
-    //         //         $transactionType = 1;
-    //         //     }
-
-    //         //     $message = $numberMessage;
-    //         //     $message .= "\nValid\n";
-    //         //     $message .= $transactionType;
-    //         //     $message .= "\nType";
-
-    //         //     $textMessageBuilder = new TextMessageBuilder($message);
-
-    //         //     // merge all message
-    //         //     $multiMessageBuilder = new MultiMessageBuilder();
-    //         //     $multiMessageBuilder->add($textMessageBuilder);
-    //         //     $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
-    //         // }
-    //     }
-
-
-
-    //     // $message = "Sedang dalam mode transaksi nih, kak. silakan ketik nominal yang valid, ya.";
-
-    //     // $textMessageBuilder = new TextMessageBuilder($message);
-
-    //     // // merge all message
-    //     // $multiMessageBuilder = new MultiMessageBuilder();
-    //     // $multiMessageBuilder->add($textMessageBuilder);
-    //     // $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
-
-    // }
 
     private function stickerMessage($event)
     {
