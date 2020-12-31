@@ -295,8 +295,8 @@ class Webhook extends Controller
         } else if (strtolower($userMessage) == 'bantuan') {
             $message = "Halo, kak. Ini list perintah yang aku ngerti:\n";
             $message .= '"masuk {nominal}" untuk mencatat transaksi pemasukan,' . "\n" . 'contoh: masuk 20000' . "\n";
-            $message .= '"keluar {nominal}" untuk mencatat transaksi pengeluaran,' . "\n" . 'contoh: keluar 20000' . "\n";
-            $message .= '"riwayat" untuk melihat total pemasukan dan pengeluaran.';
+            $message .= "\n" . '"keluar {nominal}" untuk mencatat transaksi pengeluaran,' . "\n" . 'contoh: keluar 20000' . "\n";
+            $message .= "\n" . '"riwayat" untuk melihat total pemasukan dan pengeluaran.';
 
 
             $textMessageBuilder = new TextMessageBuilder($message);
