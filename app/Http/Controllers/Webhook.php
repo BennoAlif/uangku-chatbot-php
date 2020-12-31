@@ -170,6 +170,7 @@ class Webhook extends Controller
 
         $this->user = $this->userGateway->getUser($event['source']['userId']);
         $userId = $this->user["id"];
+        $name = $this->user["display_name"];
 
         $msg = explode(" ", $userMessage);
 
@@ -237,18 +238,11 @@ class Webhook extends Controller
                 $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
             }
         } else if (strtolower($userMessage) == 'riwayat') {
+
+
             $path = storage_path() . '/json/transactions-flex.json';
-            // $flexTemplate = file_get_contents($path);
-            // $json = json_decode(file_get_contents($path), true);
-
-            // $json["body"]["contents"[1]]["text"] = "Benno";
-
-            // $newJson = json_encode($json);
-
-            // file_put_contents($path, $newJson);
-
             $flexTemplate = json_decode(file_get_contents($path));
-            $flexTemplate->body->contents[1]->text = "Benno";
+            $flexTemplate->body->contents[1]->text = $name;
 
             $httpClient = new CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
             $result = $httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [

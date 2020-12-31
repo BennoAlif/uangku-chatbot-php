@@ -7,16 +7,23 @@
             {
                 "type": "text",
                 "text": "Riwayat Transaksi",
-                "weight": "bold",
+                "weight": "regular",
                 "color": "#1DB446",
                 "size": "sm"
+            },
+            {
+                "type": "text",
+                "text": "Nama",
+                "size": "sm",
+                "margin": "sm",
+                "weight": "regular"
             },
             {
                 "type": "text",
                 "text": "UANGKU",
                 "weight": "bold",
                 "size": "xxl",
-                "margin": "md"
+                "margin": "none"
             },
             {
                 "type": "text",
