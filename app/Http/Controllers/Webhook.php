@@ -293,21 +293,17 @@ class Webhook extends Controller
                 ],
             ]);
         } else if (strtolower($userMessage) == 'bantuan') {
-            $message = 'Halo, kak. Ini list perintah yang aku ngerti:\n';
-            $message .= '"masuk {nominal}" untuk mencatat transaksi pemasukan, contoh: masuk 20000\n';
-            $message .= '"keluar {nominal}" untuk mencatat transaksi pengeluaran, contoh: keluar 20000\n';
+            $message = "Halo, kak. Ini list perintah yang aku ngerti:\n";
+            $message .= '"masuk {nominal}" untuk mencatat transaksi pemasukan,' . "\n" . 'contoh: masuk 20000' . "\n";
+            $message .= '"keluar {nominal}" untuk mencatat transaksi pengeluaran,' . "\n" . 'contoh: keluar 20000' . "\n";
             $message .= '"riwayat" untuk melihat total pemasukan dan pengeluaran.';
-
-            $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002744);
 
 
             $textMessageBuilder = new TextMessageBuilder($message);
 
-
             // merge all message
             $multiMessageBuilder = new MultiMessageBuilder();
             $multiMessageBuilder->add($textMessageBuilder);
-            $multiMessageBuilder->add($stickerMessageBuilder);
             $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
         } else {
             $message = 'Kayaknya aku belum tau artinya deh, coba ketik "bantuan" untuk liat perintah yang aku ngerti ya, kak.';
