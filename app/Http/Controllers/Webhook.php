@@ -238,10 +238,16 @@ class Webhook extends Controller
             }
         } else if (strtolower($userMessage) == 'riwayat') {
             $path = storage_path() . '/json/transactions-flex.json';
-            $flexTemplate = file_get_contents($path);
+            // $flexTemplate = file_get_contents($path);
             $json = json_decode(file_get_contents($path), true);
 
             $json["body"]["contents"[1]]["text"] = "Benno";
+
+            $newJson = json_encode($json);
+
+            file_put_contents(file_get_contents($path), $newJson);
+
+            $flexTemplate = file_get_contents($path);
 
             $httpClient = new CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
             $result = $httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
@@ -250,7 +256,7 @@ class Webhook extends Controller
                     [
                         'type'     => 'flex',
                         'altText'  => 'Test Flex Message',
-                        'contents' => $json
+                        'contents' => json_decode($flexTemplate)
                     ]
                 ],
             ]);
