@@ -262,8 +262,8 @@ class Webhook extends Controller
             $path = storage_path() . '/json/transactions-flex.json';
             $flexTemplate = json_decode(file_get_contents($path));
             $flexTemplate->body->contents[1]->text = $name;
-            $flexTemplate->body->contents[5]->contents[0]->contents[1]->text = implode(" ", $this->income);
-            $flexTemplate->body->contents[5]->contents[1]->contents[1]->text = implode(" ", $this->expense);
+            $flexTemplate->body->contents[5]->contents[0]->contents[1]->text = $this->rupiah(implode(" ", $this->income));
+            $flexTemplate->body->contents[5]->contents[1]->contents[1]->text = $this->rupiah(implode(" ", $this->expense));
 
             $httpClient = new CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
             $result = $httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
