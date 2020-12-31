@@ -29,8 +29,9 @@ class TransactionsGateway
 
     public function getTransactions(string $userId)
     {
-        $transaction = $this->db->table('transactions')->sum("nominal")
+        $transaction = $this->db->table('transactions')
             ->where('user_id', $userId)
+            ->sum("nominal")
             ->first();
 
         if ($transaction) {
