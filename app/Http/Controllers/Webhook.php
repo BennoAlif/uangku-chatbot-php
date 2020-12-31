@@ -244,7 +244,7 @@ class Webhook extends Controller
         } else if (strtolower($userMessage) == 'riwayat') {
             $this->transaction = $this->transactionsGateway->getTransactions($userId);
 
-            echo ($this->transaction);
+            var_dump($this->transaction);
             print_r($this->transaction);
 
             $message = 'Hohohihe';
